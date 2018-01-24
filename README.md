@@ -20,10 +20,21 @@ Or install it yourself as:
 
 ## Usage
 
+### Journal
+
 ```ruby
-api = Montague::API.new
+# without API key
+api = Montague::API::Journal.new
+# with API key
+api = Montague::API::Journal.new api_key: 'YOUR_API_KEY'
+```
+
+#### Find by ISSN
+```ruby
 result = api.find_by_issn '1550-7998'
-result.name
+result.title
+#=> "Physical Review D - Particles, Fields, Gravitation and Cosmology"
+result.publisher
 #=> "American Physical Society"
 result.conditions
 #=> ["On author's personal website, employer's website or institutional repository", ...]
@@ -31,10 +42,27 @@ result.pre_prints
 #=> {:archiving=>"can", :restrictions=>[]}
 result.romeo_colour
 #=> "green"
+result.mandates
+#=> [{:funder_name=>"Australian Research Council", :funder_acronym=>"ARC", :publisher_complies=>"yes", :compliance_type=>"Compliant", :selected_titles=>""}, ...]
 ```
 
-Using an API key.
-
 ```ruby
-api = Montague::API.new api_key: 'YOUR_API_KEY'
+# alternative numbers for a journal, typically ESSN and ISSN
+result = api.find_by_issn '1552-3535,0013-1245'
+result.title
+#=> "Education and Urban Society"
+```
+
+#### Find by title
+```ruby
+result = api.find_by_title 'Journal of Geology'
+result.issn
+#=> "0022-1376"
+```
+
+#### Find by partial title
+```ruby
+result = api.find_by_partial_title 'modern language'
+result.journals
+#=> [{:title=>"Canadian Modern Language Review / Revue canadian des langues vivantes", :issn=>"0008-4506"}, ...]
 ```

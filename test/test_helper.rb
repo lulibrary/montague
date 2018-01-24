@@ -30,6 +30,8 @@ def asserts_journal(x)
   assert_instance_of String, x.issn
   refute_empty x.issn
 
+  assert_instance_of Array, x.mandates
+
   assert_instance_of Hash, x.paid_access
   refute_empty x.paid_access
   assert_instance_of String, x.paid_access[:url]

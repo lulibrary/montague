@@ -8,6 +8,16 @@ module Montague
          make_doc xml
       end
 
+      # @return [Fixnum, nil]
+      def hits
+        xpath_query_for_single_value(File.join header_path, 'numhits').to_i
+      end
+
+      # @return [String, nil]
+      def message
+        xpath_query_for_single_value(File.join header_path, 'message')
+      end
+
       private
 
       def make_doc(xml)

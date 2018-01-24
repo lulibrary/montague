@@ -8,14 +8,25 @@ module Montague
         super
       end
 
-      # @return [Fixnum, nil]
-      def hits
-        xpath_query_for_single_value(File.join header_path, 'numhits').to_i
-      end
-
       # @return [String, nil]
       def issn
         xpath_query_for_single_value File.join journal_path, 'issn'
+      end
+
+      # @return [Array<Hash{Symbol}>]
+      def mandates
+        data = []
+        mandates = xpath_query File.join(publisher_path, 'mandates/mandate')
+        mandates.each do |i|
+          mandate = {}
+          mandate[:funder_name] = i.xpath('funder/fundername').text.strip
+          mandate[:funder_acronym] = i.xpath('funder/funderacronym').text.strip
+          mandate[:publisher_complies] = i.xpath('publishercomplies').text.strip
+          mandate[:compliance_type] = i.xpath('compliancetype').text.strip
+          mandate[:selected_titles] = i.xpath('selectedtitles').text.strip
+          data << mandate
+        end
+        data
       end
 
       # @return [Hash{Symbol}]
