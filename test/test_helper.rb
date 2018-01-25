@@ -23,44 +23,25 @@ def asserts_journal(x)
   assert_instance_of String, x.conditions.first
 
   assert_instance_of Array, x.copyright_links
-  refute_empty x.copyright_links
-  assert_instance_of String, x.copyright_links.first[:text]
-  assert_instance_of String, x.copyright_links.first[:url]
+  assert_instance_of Montague::Model::CopyrightLink, x.copyright_links.first
+  assert_equal true, x.copyright_links.first.data?
 
   assert_instance_of String, x.issn
   refute_empty x.issn
 
   assert_instance_of Array, x.mandates
 
-  assert_instance_of Hash, x.paid_access
-  refute_empty x.paid_access
-  assert_instance_of String, x.paid_access[:url]
-  refute_empty x.paid_access[:url]
-  assert_instance_of String, x.paid_access[:name]
-  refute_empty x.paid_access[:name]
-  assert_instance_of String, x.paid_access[:notes]
-  refute_empty x.paid_access[:notes]
+  assert_instance_of Montague::Model::PaidAccess, x.paid_access
+  assert_equal true, x.paid_access.data?
 
-  assert_instance_of Hash, x.pdf_version
-  refute_empty x.pdf_version
-  assert_instance_of String, x.pdf_version[:archiving]
-  refute_empty x.pdf_version[:archiving]
-  assert_instance_of Array, x.pdf_version[:restrictions]
-  assert_empty x.pdf_version[:restrictions]
+  assert_instance_of Montague::Model::Archiving, x.pdf_version
+  assert_equal true, x.pdf_version.data?
 
-  assert_instance_of Hash, x.post_prints
-  refute_empty x.post_prints
-  assert_instance_of String, x.post_prints[:archiving]
-  refute_empty x.post_prints[:archiving]
-  assert_instance_of Array, x.post_prints[:restrictions]
-  assert_empty x.post_prints[:restrictions]
+  assert_instance_of Montague::Model::Archiving, x.post_prints
+  assert_equal true, x.post_prints.data?
 
-  assert_instance_of Hash, x.pre_prints
-  refute_empty x.pre_prints
-  assert_instance_of String, x.pre_prints[:archiving]
-  refute_empty x.pre_prints[:archiving]
-  assert_instance_of Array, x.pre_prints[:restrictions]
-  assert_empty x.pre_prints[:restrictions]
+  assert_instance_of Montague::Model::Archiving, x.pre_prints
+  assert_equal true, x.pre_prints.data?
 
   assert_instance_of String, x.publisher
   refute_empty x.publisher

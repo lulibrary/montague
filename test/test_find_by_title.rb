@@ -19,11 +19,8 @@ class TestFindByTitle < Minitest::Test
     assert_instance_of Montague::XMLExtractor::Journals, x
     assert_instance_of Array, x.journals
     refute_empty x.journals
-    assert_instance_of Hash, x.journals.first
-    assert_instance_of String, x.journals.first[:title]
-    refute_empty x.journals.first[:title]
-    assert_instance_of String, x.journals.first[:issn]
-    refute_empty x.journals.first[:issn]
+    assert_instance_of Montague::Model::JournalHeader, x.journals.first
+    assert_equal true, x.journals.first.data?
   end
   
 end

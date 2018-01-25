@@ -39,11 +39,11 @@ result.publisher
 result.conditions
 #=> ["On author's personal website, employer's website or institutional repository", ...]
 result.pre_prints
-#=> {:archiving=>"can", :restrictions=>[]}
+#=> #<Montague::Model::Archiving:0x00c0ffee @permission="can", @restrictions=[]>
 result.romeo_colour
 #=> "green"
 result.mandates
-#=> [{:funder_name=>"Australian Research Council", :funder_acronym=>"ARC", :publisher_complies=>"yes", :compliance_type=>"Compliant", :selected_titles=>""}, ...]
+#=> [#<Montague::Model::Mandate:0x00c0ffee @funder_name="Australian Research Council", @funder_acronym="ARC", @publisher_complies="yes", @compliance_type="Compliant", @selected_titles="no">, ...]
 ```
 
 ```ruby
@@ -64,5 +64,5 @@ result.issn
 ```ruby
 result = api.find_by_partial_title 'modern language'
 result.journals
-#=> [{:title=>"Canadian Modern Language Review / Revue canadian des langues vivantes", :issn=>"0008-4506"}, ...]
+#=> [#<Montague::Model::JournalHeader:0x00c0ffee @title="Canadian Modern Language Review / Revue canadian des langues vivantes", @issn="0008-4506">, ...]
 ```

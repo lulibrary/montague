@@ -46,18 +46,8 @@ class TestFindByISSN < Minitest::Test
 
     assert_instance_of Array, x.mandates
     refute_empty x.mandates
-    assert_instance_of Hash, x.mandates.first
-    refute_empty x.mandates.first
-    assert_instance_of String, x.mandates.first[:funder_name]
-    refute_empty x.mandates.first[:funder_name]
-    assert_instance_of String, x.mandates.first[:funder_acronym]
-    refute_empty x.mandates.first[:funder_acronym]
-    assert_instance_of String, x.mandates.first[:publisher_complies]
-    refute_empty x.mandates.first[:publisher_complies]
-    assert_instance_of String, x.mandates.first[:compliance_type]
-    refute_empty x.mandates.first[:compliance_type]
-    assert_instance_of String, x.mandates.first[:selected_titles]
-    assert_empty x.mandates.first[:selected_titles]
+    assert_instance_of Montague::Model::Mandate, x.mandates.first
+    assert_equal true, x.mandates.first.data?
   end
 
 end

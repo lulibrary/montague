@@ -13,29 +13,32 @@ module Montague
         xpath_query_for_single_value File.join journal_path, 'issn'
       end
 
-      # @return [Array<Hash{Symbol}>]
+      # @return [Array<Montague::Model::Mandate>]
       def mandates
+        xpath_result = xpath_query File.join(publisher_path, 'mandates/mandate')
         data = []
-        mandates = xpath_query File.join(publisher_path, 'mandates/mandate')
-        mandates.each do |i|
-          mandate = {}
-          mandate[:funder_name] = i.xpath('funder/fundername').text.strip
-          mandate[:funder_acronym] = i.xpath('funder/funderacronym').text.strip
-          mandate[:publisher_complies] = i.xpath('publishercomplies').text.strip
-          mandate[:compliance_type] = i.xpath('compliancetype').text.strip
-          mandate[:selected_titles] = i.xpath('selectedtitles').text.strip
-          data << mandate
+        xpath_result.each do |i|
+          mandate = Montague::Model::Mandate.new
+          mandate.funder_name = i.xpath('funder/fundername').text.strip
+          mandate.funder_acronym = i.xpath('funder/funderacronym').text.strip
+          mandate.publisher_complies = i.xpath('publishercomplies').text.strip
+          mandate.compliance_type = i.xpath('compliancetype').text.strip
+          mandate.selected_titles = i.xpath('selectedtitles').text.strip
+          data << mandate if mandate.data?
         end
         data
       end
 
-      # @return [Hash{Symbol}]
+      # @return [Montague::Model::PaidAccess, nil]
       def paid_access
-        data = {}
-        data[:url] = xpath_query_for_single_value File.join publisher_path, 'paidaccess/paidaccessurl'
-        data[:name] = xpath_query_for_single_value File.join publisher_path, 'paidaccess/paidaccessname'
-        data[:notes] = xpath_query_for_single_value File.join publisher_path, 'paidaccess/paidaccessnotes'
-        data
+        xpath_result = xpath_query File.join(publisher_path, 'paidaccess')
+        if !xpath_result.empty?
+          paid_access = Montague::Model::PaidAccess.new
+          paid_access.url = xpath_result.xpath('paidaccessurl').text.strip
+          paid_access.name = xpath_result.xpath('paidaccessname').text.strip
+          paid_access.notes = xpath_result.xpath('paidaccessnotes').text.strip
+          paid_access
+        end
       end
 
       # @return [String, nil]
@@ -56,8 +59,9 @@ module Montague
       # @return (see #prints)
       def pre_prints
         paths = {
-          archiving: File.join(publisher_path, 'preprints/prearchiving'),
-          restrictions: File.join(publisher_path, 'preprints/prerestrictions')
+          archiving: 'preprints',
+          permission: 'prearchiving',
+          restrictions: 'prerestrictions'
         }
         prints paths
       end
@@ -65,8 +69,9 @@ module Montague
       # @return (see #prints)
       def post_prints
         paths = {
-          archiving: File.join(publisher_path, 'postprints/postarchiving'),
-          restrictions: File.join(publisher_path, 'postprints/postrestrictions')
+          archiving: 'postprints',
+          permission: 'postarchiving',
+          restrictions: 'postrestrictions'
         }
         prints paths
       end
@@ -74,8 +79,9 @@ module Montague
       # @return (see #prints)
       def pdf_version
         paths = {
-          archiving: File.join(publisher_path, '/pdfversion/pdfarchiving'),
-          restrictions: File.join(publisher_path, 'pdfversion/pdfrestrictions')
+          archiving: 'pdfversion',
+          permission: 'pdfarchiving',
+          restrictions: 'pdfrestrictions'
         }
         prints paths
       end
@@ -85,31 +91,34 @@ module Montague
         xpath_query_for_multi_value File.join publisher_path, 'conditions/condition'
       end
 
-      # @return [Array<Hash{Symbol}>]
+      # @return [Array<Montague::Model::CopyrightLink>]
       def copyright_links
         data = []
-        copyright_links = xpath_query File.join(publisher_path, 'copyrightlinks/copyrightlink')
-        copyright_links.each do |i|
-          copyright_link = {}
-          copyright_link[:text] = i.xpath('copyrightlinktext').text.strip
-          copyright_link[:url] = i.xpath('copyrightlinkurl').text.strip
-          data << copyright_link
+        xpath_result = xpath_query File.join(publisher_path, 'copyrightlinks/copyrightlink')
+        xpath_result.each do |i|
+          copyright_link = Montague::Model::CopyrightLink.new
+          copyright_link.text = i.xpath('copyrightlinktext').text.strip
+          copyright_link.url = i.xpath('copyrightlinkurl').text.strip
+          data << copyright_link if copyright_link.data?
         end
         data
       end
 
       private
 
-      # @return [Hash{Symbol => String, Symbol => Array<String}>]
+      # @return [Montague::Model::Archiving, nil]
       def prints(paths)
-        data = {}
-        data[:archiving] = xpath_query_for_single_value paths[:archiving]
-        data[:restrictions] = []
-        restrictions = xpath_query paths[:restrictions]
-        restrictions.each do |i|
-          data[:restrictions] << i.text.strip if !i.text.empty?
+        xpath_result = xpath_query File.join(publisher_path, paths[:archiving])
+        if !xpath_result.empty?
+          archiving = Montague::Model::Archiving.new
+          archiving.permission = xpath_result.xpath paths[:permission]
+          archiving.restrictions = []
+          restrictions = xpath_result.xpath paths[:restrictions]
+          restrictions.each do |i|
+            archiving.restrictions << i.text.strip if !i.text.empty?
+          end
+          archiving
         end
-        data
       end
 
     end
