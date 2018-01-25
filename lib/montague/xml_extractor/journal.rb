@@ -13,6 +13,7 @@ module Montague
         xpath_query_for_single_value File.join journal_path, 'issn'
       end
 
+      # Publisher compliance with the open access mandates of research funding agencies
       # @return [Array<Montague::Model::Mandate>]
       def mandates
         xpath_result = xpath_query File.join(publisher_path, 'mandates/mandate')
