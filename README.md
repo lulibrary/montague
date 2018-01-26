@@ -20,18 +20,17 @@ Or install it yourself as:
 
 ## Usage
 
-### Journal
-
+### Journals API
 ```ruby
 # without API key
-journal_api = Montague::API::Journal.new
+journals = Montague::API::Journal.new
 # with API key
-journal_api = Montague::API::Journal.new api_key: 'YOUR_API_KEY'
+journals = Montague::API::Journal.new api_key: 'YOUR_API_KEY'
 ```
 
 #### Find by ISSN
 ```ruby
-journal = journal_api.find_by_issn '1550-7998'
+journal = journals.find_by_issn '1550-7998'
 journal.title
 #=> "Physical Review D - Particles, Fields, Gravitation and Cosmology"
 journal.publisher
@@ -48,20 +47,32 @@ journal.mandates
 
 ```ruby
 # alternative numbers for a journal, typically ESSN and ISSN
-journal = journal_api.find_by_issn '1552-3535,0013-1245'
+journal = journals.find_by_issn '1552-3535,0013-1245'
 journal.title
 #=> "Education and Urban Society"
 ```
 
 #### Find by title
 ```ruby
-journal = journal_api.find_by_title 'Journal of Geology'
+journal = journals.find_by_title 'Journal of Geology'
 journal.issn
 #=> "0022-1376"
 ```
 
 #### Find by partial title
 ```ruby
-journal_api.find_by_partial_title 'modern language'
+journals.find_by_partial_title 'modern language'
 #=> [#<Montague::Model::JournalHeader:0x00c0ffee @title="Canadian Modern Language Review / Revue canadian des langues vivantes", @issn="0008-4506">, ...]
+```
+
+### API Client
+```ruby
+# without API key
+api = Montague::API::Client.new
+# with API key
+api = Montague::API::Client.new api_key: 'YOUR_API_KEY'
+```
+
+```ruby
+journal = api.journals.find_by_issn '1550-7998'
 ```

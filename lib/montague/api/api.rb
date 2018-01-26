@@ -1,5 +1,6 @@
 require 'http'
 require 'montague/api/base'
+require 'montague/api/client'
 require 'montague/api/journal'
 
 module Montague
