@@ -22,7 +22,7 @@ Or install it yourself as:
 
 ### Journal
 
-```ruby
+```ruby#
 # without API key
 api = Montague::API::Journal.new
 # with API key
@@ -43,7 +43,7 @@ result.pre_prints
 result.romeo_colour
 #=> "green"
 result.mandates
-#=> [#<Montague::Model::Mandate:0x00c0ffee @funder_name="Australian Research Council", @funder_acronym="ARC", @publisher_complies="yes", @compliance_type="Compliant", @selected_titles="no">, ...]
+#=> [#<Montague::Model::Mandate:0x00c0ffee @funder=#<Montague::Model::Funder:0x00c0ffee @name="Australian Research Council", @acronym="ARC">, @publisher_complies="yes", @compliance_type="Compliant", @selected_titles="no">, ...]
 ```
 
 ```ruby
@@ -62,7 +62,6 @@ result.issn
 
 #### Find by partial title
 ```ruby
-result = api.find_by_partial_title 'modern language'
-result.journals
+api.find_by_partial_title 'modern language'
 #=> [#<Montague::Model::JournalHeader:0x00c0ffee @title="Canadian Modern Language Review / Revue canadian des langues vivantes", @issn="0008-4506">, ...]
 ```

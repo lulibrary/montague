@@ -12,7 +12,7 @@ module Montague
       end
 
       # @param issn [String] International Standard Serial Number e.g. 1234-5678.
-      # @return [Montague::XMLExtractor::Journal, nil] XMLExtractor instance if successful.
+      # @return [Montague::Model::Journal, nil]
       def find_by_issn(issn)
         url = "#{@config[:api_url]}?issn=#{issn}#{common_parameters}"
         response = HTTP.get URI.encode(url)
@@ -20,7 +20,7 @@ module Montague
       end
 
       # @param title [String] Journal title e.g. 'Journal of Geology'
-      # @return [Montague::XMLExtractor::Journal, nil] XMLExtractor instance if successful.
+      # @return [Montague::Model::Journal, nil]
       def find_by_title(title)
         url = "#{@config[:api_url]}?jtitle=#{title}#{common_parameters}"
         response = HTTP.get URI.encode(url)
@@ -28,7 +28,7 @@ module Montague
       end
 
       # @param partial_title [String] Partial journal title e.g. 'modern language'
-      # @return [Montague::XMLExtractor::Journals, nil] XMLExtractor instance if successful.
+      # @return [Array<Montague::Model::JournalHeader>, nil]
       def find_by_partial_title(partial_title)
         url = "#{@config[:api_url]}?jtitle=#{partial_title}&qtype=contains#{common_parameters}"
         response = HTTP.get URI.encode(url)
@@ -37,20 +37,18 @@ module Montague
 
       private
 
-      # @return [Montague::XMLExtractor::Journal, nil] XMLExtractor instance if successful.
+      # @return [Montague::Model::Journal, nil]
       def package_journal(response)
-        if response.code === 200
-          xml_extractor = Montague::XMLExtractor::Journal.new response.to_s
-          xml_extractor.hits === 1 ? xml_extractor : nil
-        end
+        return unless response.code === 200
+        xml_extractor = Montague::XMLExtractor::Journal.new response.to_s
+        xml_extractor.hits === 1 ? xml_extractor.model : nil
       end
 
-      # @return [Montague::XMLExtractor::Journals, nil] XMLExtractor instance if successful.
+      # @return [Array<Montague::Model::JournalHeader>, nil]
       def package_journals(response)
-        if response.code === 200
-          xml_extractor = Montague::XMLExtractor::Journals.new response.to_s
-          xml_extractor.hits > 0 ? xml_extractor : nil
-        end
+        return unless response.code === 200
+        xml_extractor = Montague::XMLExtractor::Journals.new response.to_s
+        xml_extractor.hits > 0 ? xml_extractor.journals : nil
       end
 
     end

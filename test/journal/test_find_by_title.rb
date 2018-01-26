@@ -16,11 +16,10 @@ class TestFindByTitle < Minitest::Test
     api = Montague::API::Journal.new config
     x = api.find_by_partial_title 'modern language'
 
-    assert_instance_of Montague::XMLExtractor::Journals, x
-    assert_instance_of Array, x.journals
-    refute_empty x.journals
-    assert_instance_of Montague::Model::JournalHeader, x.journals.first
-    assert_equal true, x.journals.first.data?
+    assert_instance_of Array, x
+    refute_empty x
+    assert_instance_of Montague::Model::JournalHeader, x.first
+    assert_equal true, x.first.data?
   end
   
 end

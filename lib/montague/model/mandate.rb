@@ -5,11 +5,8 @@ module Montague
     #
     class Mandate < Montague::Model::Structure
 
-      # @return [String, nil]
-      attr_reader :funder_name
-
-      # @return [String, nil]
-      attr_reader :funder_acronym
+      # @return [Montague::Model::Funder, nil]
+      attr_reader :funder
 
       # @return [String, nil]
       attr_reader :publisher_complies
@@ -21,13 +18,8 @@ module Montague
       attr_reader :selected_titles
 
       # @param v [String]
-      def funder_name=(v)
-        @funder_name = v if v && !v.empty?
-      end
-
-      # @param v [String]
-      def funder_acronym=(v)
-        @funder_acronym = v if v && !v.empty?
+      def funder=(v)
+        @funder = v if v && v.data?
       end
 
       # @param v [String]

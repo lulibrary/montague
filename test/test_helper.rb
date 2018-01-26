@@ -14,10 +14,7 @@ def config
 end
 
 def asserts_journal(x)
-  assert_instance_of Montague::XMLExtractor::Journal, x
-
-  assert_instance_of Fixnum, x.hits
-  assert_equal 1, x.hits
+  assert_instance_of Montague::Model::Journal, x
 
   assert_instance_of Array, x.conditions
   assert_instance_of String, x.conditions.first

@@ -8,6 +8,23 @@ module Montague
         super
       end
 
+      # @return [Montague::Model::Journal]
+      def model
+        m = Montague::Model::Journal.new
+        m.conditions = conditions
+        m.copyright_links = copyright_links
+        m.issn = issn
+        m.mandates = mandates
+        m.paid_access = paid_access
+        m.pdf_version = pdf_version
+        m.pre_prints = pre_prints
+        m.post_prints = post_prints
+        m.publisher = publisher
+        m.romeo_colour = romeo_colour
+        m.title = title
+        m
+      end
+
       # @return [String, nil]
       def issn
         xpath_query_for_single_value File.join journal_path, 'issn'
@@ -20,8 +37,10 @@ module Montague
         data = []
         xpath_result.each do |i|
           mandate = Montague::Model::Mandate.new
-          mandate.funder_name = i.xpath('funder/fundername').text.strip
-          mandate.funder_acronym = i.xpath('funder/funderacronym').text.strip
+          funder = Montague::Model::Funder.new
+          funder.name = i.xpath('funder/fundername').text.strip
+          funder.acronym = i.xpath('funder/funderacronym').text.strip
+          mandate.funder = funder if funder.data?
           mandate.publisher_complies = i.xpath('publishercomplies').text.strip
           mandate.compliance_type = i.xpath('compliancetype').text.strip
           mandate.selected_titles = i.xpath('selectedtitles').text.strip
@@ -77,7 +96,7 @@ module Montague
         prints paths
       end
 
-      # @return (see #prints)
+      # @return [Montague::Model::Archiving, nil]
       def pdf_version
         paths = {
           archiving: 'pdfversion',
@@ -105,6 +124,8 @@ module Montague
         data
       end
 
+
+
       private
 
       # @return [Montague::Model::Archiving, nil]
@@ -112,7 +133,7 @@ module Montague
         xpath_result = xpath_query File.join(publisher_path, paths[:archiving])
         if !xpath_result.empty?
           archiving = Montague::Model::Archiving.new
-          archiving.permission = xpath_result.xpath paths[:permission]
+          archiving.permission = xpath_result.xpath(paths[:permission]).text.strip
           archiving.restrictions = []
           restrictions = xpath_result.xpath paths[:restrictions]
           restrictions.each do |i|
