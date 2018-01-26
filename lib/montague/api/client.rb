@@ -10,7 +10,7 @@ module Montague
         super
       end
 
-      # @return [Montague::API::Journal]
+      # @return [Montague::API::PublisherReport]
       def journals
         Montague::API::Journal.new @config
       end

@@ -1,33 +1,40 @@
 module Montague
   module XMLExtractor
-    # Journal XML extractor
+    # Report XML extractor
     #
-    class Journal < Montague::XMLExtractor::Base
+    class PublisherReport < Montague::XMLExtractor::Base
 
       def initialize(xml)
         super
       end
 
-      # @return [Montague::Model::Journal]
-      def model
-        m = Montague::Model::Journal.new
-        m.conditions = conditions
-        m.copyright_links = copyright_links
-        m.issn = issn
-        m.mandates = mandates
-        m.paid_access = paid_access
-        m.pdf_version = pdf_version
-        m.pre_prints = pre_prints
-        m.post_prints = post_prints
-        m.publisher = publisher
-        m.romeo_colour = romeo_colour
-        m.title = title
-        m
+      # @return [Montague::Model::PublisherReport]
+      def journal
+        xpath_result = xpath_query journal_path
+        if !xpath_result.empty?
+          journal = Montague::Model::Journal.new
+          journal.title = xpath_result.xpath('jtitle').text.strip
+          journal.issn = xpath_result.xpath('issn').text.strip
+          journal
+        end
       end
 
-      # @return [String, nil]
-      def issn
-        xpath_query_for_single_value File.join journal_path, 'issn'
+      # @return [Array<String>]
+      def conditions
+        xpath_query_for_multi_value File.join publisher_path, 'conditions/condition'
+      end
+
+      # @return [Array<Montague::Model::CopyrightLink>]
+      def copyright_links
+        data = []
+        xpath_result = xpath_query File.join(publisher_path, 'copyrightlinks/copyrightlink')
+        xpath_result.each do |i|
+          copyright_link = Montague::Model::CopyrightLink.new
+          copyright_link.text = i.xpath('copyrightlinktext').text.strip
+          copyright_link.url = i.xpath('copyrightlinkurl').text.strip
+          data << copyright_link if copyright_link.data?
+        end
+        data
       end
 
       # Publisher compliance with the open access mandates of research funding agencies
@@ -61,21 +68,6 @@ module Montague
         end
       end
 
-      # @return [String, nil]
-      def publisher
-        xpath_query_for_single_value File.join publisher_path, 'name'
-      end
-
-      # @return [String, nil]
-      def romeo_colour
-        xpath_query_for_single_value File.join publisher_path, 'romeocolour'
-      end
-
-      # @return [String, nil]
-      def title
-        xpath_query_for_single_value File.join journal_path, 'jtitle'
-      end
-
       # @return (see #prints)
       def pre_prints
         paths = {
@@ -106,25 +98,31 @@ module Montague
         prints paths
       end
 
-      # @return [Array<String>]
-      def conditions
-        xpath_query_for_multi_value File.join publisher_path, 'conditions/condition'
+      # @return [String, nil]
+      def publisher
+        xpath_query_for_single_value File.join publisher_path, 'name'
       end
 
-      # @return [Array<Montague::Model::CopyrightLink>]
-      def copyright_links
-        data = []
-        xpath_result = xpath_query File.join(publisher_path, 'copyrightlinks/copyrightlink')
-        xpath_result.each do |i|
-          copyright_link = Montague::Model::CopyrightLink.new
-          copyright_link.text = i.xpath('copyrightlinktext').text.strip
-          copyright_link.url = i.xpath('copyrightlinkurl').text.strip
-          data << copyright_link if copyright_link.data?
-        end
-        data
+      # @return [String, nil]
+      def romeo_colour
+        xpath_query_for_single_value File.join publisher_path, 'romeocolour'
       end
 
-
+      # @return [Montague::Model::PublisherReport]
+      def model
+        m = Montague::Model::PublisherReport.new
+        m.conditions = conditions
+        m.copyright_links = copyright_links
+        m.journal = journal
+        m.mandates = mandates
+        m.paid_access = paid_access
+        m.pdf_version = pdf_version
+        m.pre_prints = pre_prints
+        m.post_prints = post_prints
+        m.publisher = publisher
+        m.romeo_colour = romeo_colour
+        m
+      end
 
       private
 

@@ -14,7 +14,7 @@ def config
 end
 
 def asserts_journal(x)
-  assert_instance_of Montague::Model::Journal, x
+  assert_instance_of Montague::Model::PublisherReport, x
 
   assert_instance_of Array, x.conditions
   assert_instance_of String, x.conditions.first
@@ -23,8 +23,8 @@ def asserts_journal(x)
   assert_instance_of Montague::Model::CopyrightLink, x.copyright_links.first
   assert_equal true, x.copyright_links.first.data?
 
-  assert_instance_of String, x.issn
-  refute_empty x.issn
+  assert_instance_of Montague::Model::Journal, x.journal
+  assert_equal true, x.journal.data?
 
   assert_instance_of Array, x.mandates
 
@@ -45,7 +45,4 @@ def asserts_journal(x)
 
   assert_instance_of String, x.romeo_colour
   refute_empty x.romeo_colour
-
-  assert_instance_of String, x.title
-  refute_empty x.title
 end

@@ -18,7 +18,7 @@ class TestFindByTitle < Minitest::Test
 
     assert_instance_of Array, x
     refute_empty x
-    assert_instance_of Montague::Model::JournalHeader, x.first
+    assert_instance_of Montague::Model::Journal, x.first
     assert_equal true, x.first.data?
   end
   

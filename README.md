@@ -30,39 +30,35 @@ journals = Montague::API::Journal.new api_key: 'YOUR_API_KEY'
 
 #### Find by ISSN
 ```ruby
-journal = journals.find_by_issn '1550-7998'
-journal.title
-#=> "Physical Review D - Particles, Fields, Gravitation and Cosmology"
-journal.publisher
+report = journals.find_by_issn '1550-7998'
+report.journal
+#=> #<Montague::Model::Journal:0x00c0ffee @title="Physical Review D - Particles, Fields, Gravitation and Cosmology", @issn="1550-7998">
+report.publisher
 #=> "American Physical Society"
-journal.conditions
+report.conditions
 #=> ["On author's personal website, employer's website or institutional repository", ...]
-journal.pre_prints
+report.pre_prints
 #=> #<Montague::Model::Archiving:0x00c0ffee @permission="can", @restrictions=[]>
-journal.romeo_colour
+report.romeo_colour
 #=> "green"
-journal.mandates
+report.mandates
 #=> [#<Montague::Model::Mandate:0x00c0ffee @funder=#<Montague::Model::Funder:0x00c0ffee @name="Australian Research Council", @acronym="ARC">, @publisher_complies="yes", @compliance_type="Compliant", @selected_titles="no">, ...]
 ```
 
 ```ruby
 # alternative numbers for a journal, typically ESSN and ISSN
-journal = journals.find_by_issn '1552-3535,0013-1245'
-journal.title
-#=> "Education and Urban Society"
+report = journals.find_by_issn '1552-3535,0013-1245'
 ```
 
 #### Find by title
 ```ruby
-journal = journals.find_by_title 'Journal of Geology'
-journal.issn
-#=> "0022-1376"
+report = journals.find_by_title 'Journal of Geology'
 ```
 
 #### Find by partial title
 ```ruby
 journals.find_by_partial_title 'modern language'
-#=> [#<Montague::Model::JournalHeader:0x00c0ffee @title="Canadian Modern Language Review / Revue canadian des langues vivantes", @issn="0008-4506">, ...]
+#=> [#<Montague::Model::Journal:0x00c0ffee @title="Canadian Modern Language Review / Revue canadian des langues vivantes", @issn="0008-4506">, ...]
 ```
 
 ### API Client
@@ -74,5 +70,5 @@ api = Montague::API::Client.new api_key: 'YOUR_API_KEY'
 ```
 
 ```ruby
-journal = api.journals.find_by_issn '1550-7998'
+report = api.journals.find_by_issn '1550-7998'
 ```

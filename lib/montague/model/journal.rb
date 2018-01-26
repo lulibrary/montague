@@ -3,41 +3,23 @@ module Montague
 
     # Journal
     #
-    class Journal < Montague::Model::Base
-
-      # @return [Array<String>]
-      attr_accessor :conditions
-
-      # @return [Array<Montague::Model::CopyrightLink>]
-      attr_accessor :copyright_links
+    class Journal < Montague::Model::Structure
 
       # @return [String, nil]
-      attr_accessor :issn
-
-      # Publisher compliance with the open access mandates of research funding agencies
-      # @return [Array<Montague::Model::Mandate>]
-      attr_accessor :mandates
-
-      # @return [Montague::Model::PaidAccess, nil]
-      attr_accessor :paid_access
-
-      # @return [Montague::Model::Archiving, nil]
-      attr_accessor :pdf_version
-
-      # @return [Montague::Model::Archiving, nil]
-      attr_accessor :pre_prints
-
-      # @return [Montague::Model::Archiving, nil]
-      attr_accessor :post_prints
+      attr_reader :issn
 
       # @return [String, nil]
-      attr_accessor :publisher
+      attr_reader :title
 
-      # @return [String, nil]
-      attr_accessor :romeo_colour
+      # @param v [String]
+      def issn=(v)
+        @issn = v if v && !v.empty?
+      end
 
-      # @return [String, nil]
-      attr_accessor :title
+      # @param v [String]
+      def title=(v)
+        @title = v if v && !v.empty?
+      end
 
     end
   end
