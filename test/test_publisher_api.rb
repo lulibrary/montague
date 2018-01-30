@@ -91,15 +91,6 @@ class TestPublisherAPI < Minitest::Test
     assert_equal true, x.mandates.first.data?
   end
 
-  def test_find_by_title_with_api_key
-    # title: Journal of Geology
-    # issn: 0022-1376
-    api = Montague::API::Publisher.new config
-    x = api.find_by_journal_title_exact('Journal of Geology')
-
-    asserts_publisher_report x
-  end
-
   def test_client_with_api_key
     # title: Physical Review D - Particles, Fields, Gravitation and Cosmology
     # issn: 1550-7998

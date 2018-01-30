@@ -23,4 +23,17 @@ class TestJournalAPI < Minitest::Test
     assert_instance_of Montague::Model::Journal, x.first
     assert_equal true, x.first.data?
   end
+
+  def test_find_by_title_with_api_key
+    # title: Journal of Geology
+    # issn: 0022-1376
+    api = Montague::API::Journal.new config
+    x = api.find_by_journal_title_exact('chemistry')
+
+    assert_instance_of Array, x
+    refute_empty x
+    assert_instance_of Montague::Model::Journal, x.first
+
+    puts x.inspect
+  end
 end

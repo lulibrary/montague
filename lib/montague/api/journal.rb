@@ -11,7 +11,7 @@ module Montague
         super
       end
 
-      # @param partial_title [String] Partial journal title e.g. 'modern language'
+      # @param partial_title [String] Partial journal title e.g. 'modern language'. Multiple words treated as a single string.
       # @return [Array<Montague::Model::Journal>, nil]
       def find_by_title_contains(partial_title)
         url = "#{@config[:api_url]}?jtitle=#{partial_title}&qtype=contains#{common_parameters}"
@@ -19,10 +19,18 @@ module Montague
         package_journals response
       end
 
-      # @param partial_title [String] Partial journal title e.g. 'Machine'
+      # @param partial_title [String] Partial journal title e.g. 'Machine'. Multiple words treated as a single string.
       # @return [Array<Montague::Model::Journal>, nil]
       def find_by_title_starts(partial_title)
         url = "#{@config[:api_url]}?jtitle=#{partial_title}&qtype=starts#{common_parameters}"
+        response = HTTP.get URI.encode(url)
+        package_journals response
+      end
+
+      # @param title [String] Journal title e.g. 'Journal of Geology'. Multiple words treated as a single string.
+      # @return (see #package_report)
+      def find_by_journal_title_exact(title)
+        url = "#{@config[:api_url]}?jtitle=#{title}&qtype=exact#{common_parameters}"
         response = HTTP.get URI.encode(url)
         package_journals response
       end

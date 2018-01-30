@@ -19,14 +19,6 @@ module Montague
         package_report response
       end
 
-      # @param title [String] Journal title e.g. 'Journal of Geology'
-      # @return (see #package_report)
-      def find_by_journal_title_exact(title)
-        url = "#{@config[:api_url]}?jtitle=#{title}&qtype=exact#{common_parameters}"
-        response = HTTP.get URI.encode(url)
-        package_report response
-      end
-
       # @param words [String] All words present but in any order or location e.g. 'optical society'
       # @return (see #package_publishers)
       def find_by_name_all(words)
