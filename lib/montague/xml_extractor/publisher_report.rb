@@ -1,144 +1,21 @@
 module Montague
   module XMLExtractor
-    # Report XML extractor
+    # Publisher report XML extractor
     #
-    class PublisherReport < Montague::XMLExtractor::Base
+    class PublisherReport
 
       def initialize(xml)
-        super
+        @journal_extractor = Montague::XMLExtractor::Journal.new xml
+        @publisher_extractor = Montague::XMLExtractor::Publisher.new xml
       end
 
-      # @return [Montague::Model::PublisherReport]
-      def journal
-        xpath_result = xpath_query journal_path
-        if !xpath_result.empty?
-          journal = Montague::Model::Journal.new
-          journal.title = xpath_result.xpath('jtitle').text.strip
-          journal.issn = xpath_result.xpath('issn').text.strip
-          journal
-        end
-      end
-
-      # @return [Array<String>]
-      def conditions
-        xpath_query_for_multi_value File.join publisher_path, 'conditions/condition'
-      end
-
-      # @return [Array<Montague::Model::CopyrightLink>]
-      def copyright_links
-        data = []
-        xpath_result = xpath_query File.join(publisher_path, 'copyrightlinks/copyrightlink')
-        xpath_result.each do |i|
-          copyright_link = Montague::Model::CopyrightLink.new
-          copyright_link.text = i.xpath('copyrightlinktext').text.strip
-          copyright_link.url = i.xpath('copyrightlinkurl').text.strip
-          data << copyright_link if copyright_link.data?
-        end
-        data
-      end
-
-      # Publisher compliance with the open access mandates of research funding agencies
-      # @return [Array<Montague::Model::Mandate>]
-      def mandates
-        xpath_result = xpath_query File.join(publisher_path, 'mandates/mandate')
-        data = []
-        xpath_result.each do |i|
-          mandate = Montague::Model::Mandate.new
-          funder = Montague::Model::Funder.new
-          funder.name = i.xpath('funder/fundername').text.strip
-          funder.acronym = i.xpath('funder/funderacronym').text.strip
-          mandate.funder = funder if funder.data?
-          mandate.publisher_complies = i.xpath('publishercomplies').text.strip
-          mandate.compliance_type = i.xpath('compliancetype').text.strip
-          mandate.selected_titles = i.xpath('selectedtitles').text.strip
-          data << mandate if mandate.data?
-        end
-        data
-      end
-
-      # @return [Montague::Model::PaidAccess, nil]
-      def paid_access
-        xpath_result = xpath_query File.join(publisher_path, 'paidaccess')
-        if !xpath_result.empty?
-          paid_access = Montague::Model::PaidAccess.new
-          paid_access.url = xpath_result.xpath('paidaccessurl').text.strip
-          paid_access.name = xpath_result.xpath('paidaccessname').text.strip
-          paid_access.notes = xpath_result.xpath('paidaccessnotes').text.strip
-          paid_access
-        end
-      end
-
-      # @return (see #prints)
-      def pre_prints
-        paths = {
-          archiving: 'preprints',
-          permission: 'prearchiving',
-          restrictions: 'prerestrictions'
-        }
-        prints paths
-      end
-
-      # @return (see #prints)
-      def post_prints
-        paths = {
-          archiving: 'postprints',
-          permission: 'postarchiving',
-          restrictions: 'postrestrictions'
-        }
-        prints paths
-      end
-
-      # @return [Montague::Model::Archiving, nil]
-      def pdf_version
-        paths = {
-          archiving: 'pdfversion',
-          permission: 'pdfarchiving',
-          restrictions: 'pdfrestrictions'
-        }
-        prints paths
-      end
-
-      # @return [String, nil]
-      def publisher
-        xpath_query_for_single_value File.join publisher_path, 'name'
-      end
-
-      # @return [String, nil]
-      def romeo_colour
-        xpath_query_for_single_value File.join publisher_path, 'romeocolour'
-      end
-
-      # @return [Montague::Model::PublisherReport]
-      def model
-        m = Montague::Model::PublisherReport.new
-        m.conditions = conditions
-        m.copyright_links = copyright_links
-        m.journal = journal
-        m.mandates = mandates
-        m.paid_access = paid_access
-        m.pdf_version = pdf_version
-        m.pre_prints = pre_prints
-        m.post_prints = post_prints
-        m.publisher = publisher
-        m.romeo_colour = romeo_colour
-        m
-      end
-
-      private
-
-      # @return [Montague::Model::Archiving, nil]
-      def prints(paths)
-        xpath_result = xpath_query File.join(publisher_path, paths[:archiving])
-        if !xpath_result.empty?
-          archiving = Montague::Model::Archiving.new
-          archiving.permission = xpath_result.xpath(paths[:permission]).text.strip
-          archiving.restrictions = []
-          restrictions = xpath_result.xpath paths[:restrictions]
-          restrictions.each do |i|
-            archiving.restrictions << i.text.strip if !i.text.empty?
-          end
-          archiving
-        end
+      # @return [Montague::Model::PublisherReport, nil]
+      def report
+        return unless @publisher_extractor.hits === 1
+        h = Montague::Model::PublisherReport.new
+        h.journal = @journal_extractor.model
+        h.publisher = @publisher_extractor.model
+        h
       end
 
     end

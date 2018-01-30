@@ -1,15 +1,15 @@
 module Montague
   module XMLExtractor
-    # Journals XML extractor
+    # Journal XML extractor
     #
-    class Journals < Montague::XMLExtractor::Base
+    class Journal < Montague::XMLExtractor::Base
 
       def initialize(xml)
         super
       end
 
-      # @return [Array<Montague::Model::PublisherReport>]
-      def journals
+      # @return [Array<Montague::Model::Journal>]
+      def models
         data = []
         xpath_result = xpath_query journal_path
         xpath_result.each do |i|
@@ -19,6 +19,11 @@ module Montague
           data << journal
         end
         data
+      end
+
+      # @return [Montague::Model::Journal]
+      def model
+        models.first unless models.empty?
       end
 
     end

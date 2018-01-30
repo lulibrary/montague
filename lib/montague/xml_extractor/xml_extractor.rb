@@ -1,7 +1,8 @@
 require 'nokogiri'
 require 'montague/xml_extractor/base'
+require 'montague/xml_extractor/publisher'
 require 'montague/xml_extractor/publisher_report'
-require 'montague/xml_extractor/journals'
+require 'montague/xml_extractor/journal'
 
 module Montague
   # An XMLExtractor manages the extraction of metadata from XML into Ruby

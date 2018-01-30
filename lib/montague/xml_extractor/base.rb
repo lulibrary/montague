@@ -21,6 +21,7 @@ module Montague
       private
 
       def make_doc(xml)
+        xml = xml.encode('UTF-8', :invalid => :replace, :undef => :replace)
         @doc = Nokogiri::XML xml
         @doc.remove_namespaces!
       end
