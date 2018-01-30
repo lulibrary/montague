@@ -26,6 +26,11 @@ module Montague
         data
       end
 
+      # @return [Fixnum]
+      def id
+        xpath_query_for_single_value('/publisher/@id').to_i
+      end
+
       # Publisher compliance with the open access mandates of research funding agencies
       # @return [Array<Montague::Model::Mandate>]
       def mandates
@@ -103,6 +108,7 @@ module Montague
         m = Montague::Model::Publisher.new
         m.conditions = conditions
         m.copyright_links = copyright_links
+        m.id = id
         m.mandates = mandates
         m.name = name
         m.paid_access = paid_access

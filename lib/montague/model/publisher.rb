@@ -11,6 +11,9 @@ module Montague
       # @return [Array<Montague::Model::CopyrightLink>]
       attr_accessor :copyright_links
 
+      # @return [Fixnum]
+      attr_accessor :id
+
       # Publisher compliance with the open access mandates of research funding agencies
       # @return [Array<Montague::Model::Mandate>]
       attr_accessor :mandates

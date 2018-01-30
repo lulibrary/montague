@@ -45,6 +45,14 @@ module Montague
         find_by_name_x words, 'exact'
       end
 
+      # @param id [Fixnum]
+      # @return (see #package_publisher)
+      def find_by_id(id)
+        url = "#{@config[:api_url]}?id=#{id}#{common_parameters}"
+        response = HTTP.get URI.encode(url)
+        package_publisher response
+      end
+
       private
 
       # @return [Montague::Model::PublisherReport, nil]
@@ -59,6 +67,13 @@ module Montague
         return unless response.code === 200
         xml_extractor = Montague::XMLExtractor::Publisher.new response.to_s
         xml_extractor.hits > 0 ? xml_extractor.models : nil
+      end
+
+      # @return [Montague::Model::Publisher, nil]
+      def package_publisher(response)
+        return unless response.code === 200
+        xml_extractor = Montague::XMLExtractor::Publisher.new response.to_s
+        xml_extractor.hits === 1 ? xml_extractor.model : nil
       end
 
       def find_by_name_x(words, type)

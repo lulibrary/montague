@@ -2,6 +2,42 @@ require 'test_helper'
 
 class TestPublisherAPI < Minitest::Test
 
+  def asserts_publisher(x)
+
+    # puts x.inspect
+
+    assert_instance_of Montague::Model::Publisher, x
+
+    assert_instance_of Array, x.conditions
+    assert_instance_of String, x.conditions.first
+
+    assert_instance_of Array, x.copyright_links
+    assert_instance_of Montague::Model::CopyrightLink, x.copyright_links.first
+    assert_equal true, x.copyright_links.first.data?
+
+    assert_instance_of Fixnum, x.id
+
+    assert_instance_of Array, x.mandates
+
+    assert_instance_of String, x.name
+    refute_empty x.name
+
+    assert_instance_of Montague::Model::PaidAccess, x.paid_access
+    assert_equal true, x.paid_access.data?
+
+    assert_instance_of Montague::Model::Archiving, x.pdf_version
+    assert_equal true, x.pdf_version.data?
+
+    assert_instance_of Montague::Model::Archiving, x.post_prints
+    assert_equal true, x.post_prints.data?
+
+    assert_instance_of Montague::Model::Archiving, x.pre_prints
+    assert_equal true, x.pre_prints.data?
+
+    assert_instance_of String, x.romeo_colour
+    refute_empty x.romeo_colour
+  end
+
   def asserts_publisher_report(x)
     asserts_journal x.journal
     asserts_publisher x.publisher
@@ -101,6 +137,16 @@ class TestPublisherAPI < Minitest::Test
     assert_instance_of Array, x
     refute_empty x
     assert_instance_of Montague::Model::Publisher, x.first
+  end
+
+  def test_find_by_id_with_api_key
+    # title: Physical Review D - Particles, Fields, Gravitation and Cosmology
+    # id: 10
+    id = 10
+    api = Montague::API::Publisher.new config
+    x = api.find_by_id id
+
+    asserts_publisher x
   end
 
 end
