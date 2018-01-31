@@ -19,6 +19,13 @@ module Montague
         "&showfunder=all&ak=#{@config[:api_key]}"
       end
 
+      # @return [Montague::Model::Report]
+      def report(response)
+        return unless response.code === 200
+        xml_extractor = Montague::XMLExtractor::Report.new response.to_s
+        xml_extractor.report
+      end
+
     end
 
   end

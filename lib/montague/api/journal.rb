@@ -11,37 +11,24 @@ module Montague
         super
       end
 
-      # @param partial_title [String] Partial journal title e.g. 'modern language'. Multiple words treated as a single string.
-      # @return [Array<Montague::Model::Journal>, nil]
-      def find_by_title_contains(partial_title)
-        url = "#{@config[:api_url]}?jtitle=#{partial_title}&qtype=contains#{common_parameters}"
+      # @param issn [String] International Standard Serial Number e.g. 1234-5678.
+      # @return (see Montague::API::Base#report)
+      def find_by_issn(issn)
+        url = "#{@config[:api_url]}?issn=#{issn}#{common_parameters}"
         response = HTTP.get URI.encode(url)
-        package_journals response
+        report response
       end
 
-      # @param partial_title [String] Partial journal title e.g. 'Machine'. Multiple words treated as a single string.
-      # @return [Array<Montague::Model::Journal>, nil]
-      def find_by_title_starts(partial_title)
-        url = "#{@config[:api_url]}?jtitle=#{partial_title}&qtype=starts#{common_parameters}"
+      # @param title [String] Multiple words treated as a single string
+      # @param query_type [Symbol]
+      #   * :contains - Partial title e.g. 'modern language'
+      #   * :starts - Partial title e.g. 'Machine'
+      #   * :exact - Title e.g. 'Journal of Geology'
+      # @return (see Montague::API::Base#report)
+      def find_by_title(title:, query_type:)
+        url = "#{@config[:api_url]}?jtitle=#{title}&qtype=#{query_type}#{common_parameters}"
         response = HTTP.get URI.encode(url)
-        package_journals response
-      end
-
-      # @param title [String] Journal title e.g. 'Journal of Geology'. Multiple words treated as a single string.
-      # @return (see #package_report)
-      def find_by_journal_title_exact(title)
-        url = "#{@config[:api_url]}?jtitle=#{title}&qtype=exact#{common_parameters}"
-        response = HTTP.get URI.encode(url)
-        package_journals response
-      end
-
-      private
-
-      # @return [Array<Montague::Model::Journal>, nil]
-      def package_journals(response)
-        return unless response.code === 200
-        xml_extractor = Montague::XMLExtractor::Journal.new response.to_s
-        xml_extractor.hits > 0 ? xml_extractor.models : nil
+        report response
       end
 
     end
