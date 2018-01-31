@@ -8,6 +8,11 @@ module Montague
         super
       end
 
+      # @return [String]
+      def name_alias
+        xpath_query_for_single_value '/publisher/alias'
+      end
+
       # @return [Array<String>]
       def conditions
         xpath_query_for_multi_value '/publisher/conditions/condition'
@@ -26,9 +31,9 @@ module Montague
         data
       end
 
-      # @return [Fixnum]
+      # @return [String]
       def id
-        xpath_query_for_single_value('/publisher/@id').to_i
+        xpath_query_for_single_value '/publisher/@id'
       end
 
       # Publisher compliance with the open access mandates of research funding agencies
@@ -106,6 +111,7 @@ module Montague
       # @return [Montague::Model::Publisher]
       def package_model
         m = Montague::Model::Publisher.new
+        m.alias = name_alias
         m.conditions = conditions
         m.copyright_links = copyright_links
         m.id = id

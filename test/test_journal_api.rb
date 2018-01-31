@@ -34,6 +34,6 @@ class TestJournalAPI < Minitest::Test
     refute_empty x
     assert_instance_of Montague::Model::Journal, x.first
 
-    puts x.inspect
+    # puts x.inspect
   end
 end

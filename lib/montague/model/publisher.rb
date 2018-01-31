@@ -6,12 +6,15 @@ module Montague
     class Publisher < Montague::Model::Base
 
       # @return [Array<String>]
+      attr_accessor :alias
+
+      # @return [Array<String>]
       attr_accessor :conditions
 
       # @return [Array<Montague::Model::CopyrightLink>]
       attr_accessor :copyright_links
 
-      # @return [Fixnum]
+      # @return [String]
       attr_accessor :id
 
       # Publisher compliance with the open access mandates of research funding agencies

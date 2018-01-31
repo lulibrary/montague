@@ -4,9 +4,11 @@ class TestPublisherAPI < Minitest::Test
 
   def asserts_publisher(x)
 
-    # puts x.inspect
+    puts x.inspect
 
     assert_instance_of Montague::Model::Publisher, x
+
+    assert_instance_of String, x.alias if x.alias
 
     assert_instance_of Array, x.conditions
     assert_instance_of String, x.conditions.first
@@ -15,7 +17,7 @@ class TestPublisherAPI < Minitest::Test
     assert_instance_of Montague::Model::CopyrightLink, x.copyright_links.first
     assert_equal true, x.copyright_links.first.data?
 
-    assert_instance_of Fixnum, x.id
+    assert_instance_of String, x.id
 
     assert_instance_of Array, x.mandates
 
