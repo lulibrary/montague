@@ -27,12 +27,15 @@ module Montague
       # @return [Montague::Model::PaidAccess, nil]
       attr_accessor :paid_access
 
+      # Publisher version, with formatting
       # @return [Montague::Model::Archiving, nil]
       attr_accessor :pdf_version
 
+      # Submitted version, before peer-review
       # @return [Montague::Model::Archiving, nil]
       attr_accessor :pre_prints
 
+      # Accepted version, after peer-review
       # @return [Montague::Model::Archiving, nil]
       attr_accessor :post_prints
 

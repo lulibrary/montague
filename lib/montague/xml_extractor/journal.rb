@@ -8,7 +8,7 @@ module Montague
         super
       end
 
-      # @return [Array<Montague::Model::Journal>]
+      # @return [Array<Montague::Model::Client>]
       def models
         data = []
         xpath_result = xpath_query journal_path
@@ -21,7 +21,7 @@ module Montague
         data
       end
 
-      # @return [Montague::Model::Journal]
+      # @return [Montague::Model::Client]
       def model
         models.first unless models.empty?
       end
