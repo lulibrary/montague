@@ -7,7 +7,7 @@ class TestSearchByJournal < Minitest::Test
     api = Montague::API::Client.new config
     x = api.find_by_journal_title title: 'modern language', filter: :contains
 
-    asserts_report x
+    asserts_journal_report x
   end
 
   def test_find_by_title_starts_with_api_key
@@ -15,7 +15,7 @@ class TestSearchByJournal < Minitest::Test
     api = Montague::API::Client.new config
     x = api.find_by_journal_title title: 'Machine', filter: :starts
 
-    asserts_report x
+    asserts_journal_report x
   end
 
   def test_find_by_title_with_api_key
@@ -24,7 +24,7 @@ class TestSearchByJournal < Minitest::Test
     api = Montague::API::Client.new config
     x = api.find_by_journal_title title: 'chemistry', filter: :exact
 
-    asserts_report x
+    asserts_journal_report x
 
     # puts x.inspect
   end
@@ -35,7 +35,7 @@ class TestSearchByJournal < Minitest::Test
     api = Montague::API::Client.new config
     x = api.find_by_journal_issn('1550-799')
 
-    asserts_report x
+    asserts_journal_report x
   end
 
   def test_without_api_key
@@ -44,7 +44,7 @@ class TestSearchByJournal < Minitest::Test
     api = Montague::API::Client.new
     x = api.find_by_journal_issn('1550-7998')
 
-    asserts_report x
+    asserts_journal_report x
   end
 
   def test_with_api_key
@@ -53,7 +53,7 @@ class TestSearchByJournal < Minitest::Test
     api = Montague::API::Client.new config
     x = api.find_by_journal_issn('1550-7998')
 
-    asserts_report x
+    asserts_journal_report x
   end
 
   def test_alternate_values_with_api_key
@@ -62,7 +62,7 @@ class TestSearchByJournal < Minitest::Test
     api = Montague::API::Client.new config
     x = api.find_by_journal_issn('1552-3535,0013-1245')
 
-    asserts_report x
+    asserts_journal_report x
   end
 
   def test_mandates_with_api_key
@@ -71,7 +71,7 @@ class TestSearchByJournal < Minitest::Test
     api = Montague::API::Client.new config
     x = api.find_by_journal_issn('0022-1376')
 
-    mandates = x.publishers.first.mandates
+    mandates = x.publisher.mandates
     assert_instance_of Array, mandates
     refute_empty mandates
     assert_instance_of Montague::Model::Mandate, mandates.first

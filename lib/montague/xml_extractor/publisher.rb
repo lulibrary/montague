@@ -31,9 +31,9 @@ module Montague
         data
       end
 
-      # @return [String]
+      # @return [String] Allows for dummy ID string when there is no RoMEO entry with numeric ID
       def id
-        xpath_query_for_single_value '/publisher/@id'
+        xpath_query_for_single_value('/publisher/@id').to_s
       end
 
       # Publisher compliance with the open access mandates of research funding agencies

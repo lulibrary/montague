@@ -14,32 +14,31 @@ module Montague
       end
 
       # @param issn [String] International Standard Serial Number e.g. 1234-5678.
-      # @return (see #report)
+      # @return [Montague::Model::JournalsReport]
       def find_by_journal_issn(issn)
         url = "#{@config[:api_url]}?issn=#{issn}#{common_parameters}"
         response = HTTP.get URI.encode(url)
-        report response
+        journals_report response
       end
 
       # @param title [String] Multiple words treated as a single string. Case insensitive.
       # @param filter [Symbol]
-      #   * :contains - Contains e.g. 'modern language'
-      #   * :starts - Starts with e.g. 'machine'
       #   * :exact - Verbatim e.g. 'Journal of Geology'
-      # @return (see #report)
-      def find_by_journal_title(title:, filter:)
+      #   * :starts - Starts with e.g. 'machine'
+      #   * :contains - Contains e.g. 'modern language'
+      # @return [Montague::Model::JournalsReport]
+      def find_by_journal_title(title:, filter: :exact)
         url = "#{@config[:api_url]}?jtitle=#{title}&qtype=#{filter}#{common_parameters}"
         response = HTTP.get URI.encode(url)
-        report response
+        journals_report response
       end
 
-      # @param id [String]
-      # @return (see #report)
-      # @note Montague::Model::Report#journals is always empty
+      # @param id [Fixnum] RoMEO persistent ID
+      # @return [Montague::Model::PublisherReport]
       def find_by_publisher_id(id)
         url = "#{@config[:api_url]}?id=#{id}#{common_parameters}"
         response = HTTP.get URI.encode(url)
-        report response
+        publisher_report response
       end
 
       # @param name [String] e.g. 'optical society'
@@ -47,12 +46,11 @@ module Montague
       #   * :all - All words present but in any order or location
       #   * :any - At least one of the words present
       #   * :exact - Intact phrase somewhere e.g. 'tute of'
-      # @return (see #report)
-      # @note Montague::Model::Report#journals is always empty
-      def find_by_publisher_name(name:, filter:)
+      # @return [Montague::Model::PublishersReport]
+      def find_by_publisher_name(name:, filter: :all)
         url = "#{@config[:api_url]}?pub=#{name}&qtype=#{filter}#{common_parameters}"
         response = HTTP.get URI.encode(url)
-        report response
+        publishers_report response
       end
 
       private
@@ -61,10 +59,21 @@ module Montague
         "&showfunder=all&ak=#{@config[:api_key]}"
       end
 
-      # @return [Montague::Model::Report]
-      def report(response)
-        return unless response.code === 200
-        xml_extractor = Montague::XMLExtractor::Report.new response.to_s
+      # @return [Montague::Model::JournalsReport]
+      def journals_report(response)
+        xml_extractor = Montague::Report::JournalsReport.new response
+        xml_extractor.report
+      end
+
+      # @return [Montague::Model::PublishersReport]
+      def publishers_report(response)
+        xml_extractor = Montague::Report::PublishersReport.new response
+        xml_extractor.report
+      end
+
+      # @return [Montague::Model::PublisherReport]
+      def publisher_report(response)
+        xml_extractor = Montague::Report::PublisherReport.new response
         xml_extractor.report
       end
 
