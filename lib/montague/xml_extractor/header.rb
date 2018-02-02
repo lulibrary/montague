@@ -28,6 +28,7 @@ module Montague
         xpath_query_for_single_value(File.join header_path, 'outcome')
       end
 
+      # @return [Montague::Model::Header]
       def model
         m = Montague::Model::Header.new
         m.api_control = api_control

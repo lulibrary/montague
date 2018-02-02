@@ -1,8 +1,8 @@
 module Montague
-  module Report
-    # Publisher report
+  module Reporter
+    # Publisher reporter
     #
-    class PublisherReport
+    class Publisher
 
       def initialize(response)
         @response = response

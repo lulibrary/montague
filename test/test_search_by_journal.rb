@@ -4,16 +4,16 @@ class TestSearchByJournal < Minitest::Test
 
   def test_find_by_title_contains_with_api_key
     # title (partial): modern language
-    api = Montague::API::Client.new config
-    x = api.find_by_journal_title title: 'modern language', filter: :contains
+    journals = Montague::API::Journal.new config
+    x = journals.find_by_title text: 'modern language', filter: :contains
 
     asserts_journal_report x
   end
 
   def test_find_by_title_starts_with_api_key
     # title (partial): Machine
-    api = Montague::API::Client.new config
-    x = api.find_by_journal_title title: 'Machine', filter: :starts
+    journals = Montague::API::Journal.new config
+    x = journals.find_by_title text: 'Machine', filter: :starts
 
     asserts_journal_report x
   end
@@ -21,8 +21,8 @@ class TestSearchByJournal < Minitest::Test
   def test_find_by_title_with_api_key
     # title: Journal of Geology
     # issn: 0022-1376
-    api = Montague::API::Client.new config
-    x = api.find_by_journal_title title: 'chemistry', filter: :exact
+    journals = Montague::API::Journal.new config
+    x = journals.find_by_title text: 'chemistry', filter: :exact
 
     asserts_journal_report x
 
@@ -32,35 +32,35 @@ class TestSearchByJournal < Minitest::Test
   def test_invalid_issn_with_api_key
     # title: Physical Review D - Particles, Fields, Gravitation and Cosmology
     # issn: 1550-7998 (INCOMPLETE)
-    api = Montague::API::Client.new config
-    x = api.find_by_journal_issn('1550-799')
+    journals = Montague::API::Journal.new config
+    x = journals.find_by_issn('1550-799')
 
     asserts_journal_report x
   end
 
-  def test_without_api_key
+  def test_find_by_issn_without_api_key
     # title: Physical Review D - Particles, Fields, Gravitation and Cosmology
     # issn: 1550-7998
-    api = Montague::API::Client.new
-    x = api.find_by_journal_issn('1550-7998')
+    journals = Montague::API::Journal.new
+    x = journals.find_by_issn('1550-7998')
 
     asserts_journal_report x
   end
 
-  def test_with_api_key
+  def test_find_by_issn_with_api_key
     # title: Physical Review D - Particles, Fields, Gravitation and Cosmology
     # issn: 1550-7998
-    api = Montague::API::Client.new config
-    x = api.find_by_journal_issn('1550-7998')
+    journals = Montague::API::Journal.new config
+    x = journals.find_by_issn('1550-7998')
 
     asserts_journal_report x
   end
 
-  def test_alternate_values_with_api_key
+  def test_alternate_issn_values_with_api_key
     # title: Education and Urban Society
     # issn: 0013-1245
-    api = Montague::API::Client.new config
-    x = api.find_by_journal_issn('1552-3535,0013-1245')
+    journals = Montague::API::Journal.new config
+    x = journals.find_by_issn('1552-3535,0013-1245')
 
     asserts_journal_report x
   end
@@ -68,8 +68,8 @@ class TestSearchByJournal < Minitest::Test
   def test_mandates_with_api_key
     # title: Journal of Geology
     # issn: 0022-1376
-    api = Montague::API::Client.new config
-    x = api.find_by_journal_issn('0022-1376')
+    journals = Montague::API::Journal.new config
+    x = journals.find_by_issn('0022-1376')
 
     mandates = x.publisher.mandates
     assert_instance_of Array, mandates

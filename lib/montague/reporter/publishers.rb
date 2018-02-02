@@ -1,8 +1,8 @@
 module Montague
-  module Report
-    # Publishers report
+  module Reporter
+    # Publishers reporter
     #
-    class PublishersReport
+    class Publishers
 
       def initialize(response)
         @response = response
@@ -10,7 +10,7 @@ module Montague
         @publisher_extractor = Montague::XMLExtractor::Publisher.new  response.to_s
       end
 
-      # @return [Montague::Model::PublisherReport]
+      # @return [Montague::Model::PublishersReport]
       def report
         h = Montague::Model::PublishersReport.new
         h.http_response = @response

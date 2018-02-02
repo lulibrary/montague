@@ -1,8 +1,8 @@
 module Montague
-  module Report
-    # Journal report
+  module Reporter
+    # Journals reporter
     #
-    class JournalsReport
+    class Journals
 
       def initialize(response)
         @response = response
