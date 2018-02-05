@@ -71,10 +71,17 @@ def asserts_header(x)
 end
 
 def asserts_journal_report(x)
-  x.journals.each { |i| asserts_journal i }
-  asserts_publisher x.publisher if x.publisher
+  assert_instance_of Montague::Model::JournalReport, x
   assert_instance_of HTTP::Response, x.http_response
   asserts_header x.header
+  asserts_journal x.journal if x.journal
+end
+
+def asserts_journals_report(x)
+  assert_instance_of Montague::Model::JournalsReport, x
+  assert_instance_of HTTP::Response, x.http_response
+  asserts_header x.header
+  x.journals.each { |i| asserts_journal i }
 end
 
 def asserts_publishers_report(x)
@@ -87,4 +94,9 @@ def asserts_publisher_report(x)
   asserts_publisher x.publisher
   assert_instance_of HTTP::Response, x.http_response
   asserts_header x.header
+end
+
+def asserts_publisher_found(x)
+  assert_equal true, x.respond_to?(:publisher)
+  refute_nil x.publisher
 end

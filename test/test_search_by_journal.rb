@@ -7,7 +7,7 @@ class TestSearchByJournal < Minitest::Test
     journals = Montague::API::Journal.new config
     x = journals.find_by_title text: 'modern language', filter: :contains
 
-    asserts_journal_report x
+    asserts_journals_report x
   end
 
   def test_find_by_title_starts_with_api_key
@@ -15,7 +15,7 @@ class TestSearchByJournal < Minitest::Test
     journals = Montague::API::Journal.new config
     x = journals.find_by_title text: 'Machine', filter: :starts
 
-    asserts_journal_report x
+    asserts_journals_report x
   end
 
   def test_find_by_title_with_api_key
@@ -24,9 +24,18 @@ class TestSearchByJournal < Minitest::Test
     journals = Montague::API::Journal.new config
     x = journals.find_by_title text: 'chemistry', filter: :exact
 
-    asserts_journal_report x
+    asserts_journals_report x
 
     # puts x.inspect
+  end
+
+  def test_find_by_title_unique_with_api_key
+    # title: Man
+    journals = Montague::API::Journal.new config
+    x = journals.find_by_title text: 'Man', filter: :exact
+
+    asserts_publisher_found x
+    asserts_journals_report x
   end
 
   def test_invalid_issn_with_api_key
@@ -36,6 +45,7 @@ class TestSearchByJournal < Minitest::Test
     x = journals.find_by_issn('1550-799')
 
     asserts_journal_report x
+    assert_equal 0, x.header.hits
   end
 
   def test_find_by_issn_without_api_key
@@ -44,6 +54,7 @@ class TestSearchByJournal < Minitest::Test
     journals = Montague::API::Journal.new
     x = journals.find_by_issn('1550-7998')
 
+    asserts_publisher_found x
     asserts_journal_report x
   end
 
@@ -53,6 +64,7 @@ class TestSearchByJournal < Minitest::Test
     journals = Montague::API::Journal.new config
     x = journals.find_by_issn('1550-7998')
 
+    asserts_publisher_found x
     asserts_journal_report x
   end
 

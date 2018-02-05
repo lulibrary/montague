@@ -1,11 +1,14 @@
 module Montague
   module Model
-    # Publisher report
+    # Journal report
     #
-    class PublisherReport
+    class JournalReport
       include Montague::Model::ReportHeaderMixin
       include Montague::Model::ReportHTTPResponseMixin
       include Montague::Model::ReportPublisherMixin
+
+      # @return [Montague::Model::Journal]
+      attr_accessor :journal
 
     end
   end

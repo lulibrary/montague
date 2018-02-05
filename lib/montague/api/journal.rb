@@ -12,11 +12,11 @@ module Montague
       end
 
       # @param issn [String] International Standard Serial Number e.g. 1234-5678.
-      # @return (see #journals_report)
+      # @return (see #journal_report)
       def find_by_issn(issn)
         url = "#{@config[:api_url]}?issn=#{issn}#{common_parameters}"
         response = HTTP.get URI.encode(url)
-        journals_report response
+        journal_report response
       end
 
       # @param text [String] Multiple words treated as a single string. Case insensitive.
@@ -24,14 +24,26 @@ module Montague
       #   * :exact - Verbatim e.g. 'Journal of Geology'
       #   * :starts - Starts with e.g. 'machine'
       #   * :contains - Contains e.g. 'modern language'
+      # @return (see #journal_report)
       # @return (see #journals_report)
       def find_by_title(text:, filter: :exact)
         url = "#{@config[:api_url]}?jtitle=#{text}&qtype=#{filter}#{common_parameters}"
         response = HTTP.get URI.encode(url)
-        journals_report response
+        report = journals_report response
+        if report.header.hits === 1
+          return journal_report response
+        else
+          return report
+        end
       end
 
       private
+
+      # @return [Montague::Model::JournalReport]
+      def journal_report(response)
+        xml_extractor = Montague::Reporter::Journal.new response
+        xml_extractor.report
+      end
 
       # @return [Montague::Model::JournalsReport]
       def journals_report(response)

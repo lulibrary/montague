@@ -1,3 +1,4 @@
+require 'montague/reporter/journal'
 require 'montague/reporter/journals'
 require 'montague/reporter/publisher'
 require 'montague/reporter/publishers'

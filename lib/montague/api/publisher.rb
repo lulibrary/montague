@@ -24,11 +24,17 @@ module Montague
       #   * :all - All words present but in any order or location
       #   * :any - At least one of the words present
       #   * :exact - Intact phrase somewhere e.g. 'tute of'
+      # @return (see #publisher_report)
       # @return (see #publishers_report)
       def find_by_name(text:, filter: :all)
         url = "#{@config[:api_url]}?pub=#{text}&qtype=#{filter}#{common_parameters}"
         response = HTTP.get URI.encode(url)
-        publishers_report response
+        report = publishers_report response
+        if report.header.hits === 1
+          return publisher_report response
+        else
+          return report
+        end
       end
 
       private

@@ -3,8 +3,8 @@ module Montague
     # Publishers report
     #
     class PublishersReport
-      include Montague::Model::ReportHTTPResponseMixin
       include Montague::Model::ReportHeaderMixin
+      include Montague::Model::ReportHTTPResponseMixin
 
       # @return [Array<Montague::Model::Publisher>]
       attr_accessor :publishers

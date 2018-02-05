@@ -21,8 +21,6 @@ module Montague
         data
       end
 
-      private
-
       # @return [Montague::Model::Client]
       def model
         models.first unless models.empty?
