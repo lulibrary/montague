@@ -126,6 +126,9 @@ report.publisher
 #=> #<Montague::Model::Publisher:0x00c0ffee ...>
 ```
 
+### Language support
+Configure an API object with the ```:language``` keyword argument and a 2-letter ISO 639-1 code to obtain results in English, German, Spanish, Hungarian or Portuguese.
+
 ### Inspecting reports
 ```ruby
 report.header
