@@ -25,8 +25,6 @@ class TestSearchByJournal < Minitest::Test
     x = journals.find_by_title text: 'chemistry', filter: :exact
 
     asserts_journals_report x
-
-    # puts x.inspect
   end
 
   def test_find_by_title_unique_with_api_key
@@ -34,7 +32,6 @@ class TestSearchByJournal < Minitest::Test
     journals = Montague::API::Journal.new config
     x = journals.find_by_title text: 'Man', filter: :exact
 
-    asserts_publisher_found x
     asserts_journals_report x
   end
 

@@ -26,15 +26,6 @@ This information is derived from the SHERPA/RoMEO database and has been modified
 
 Montague makes it possible to discover a publisher's copyright and archiving policies. This can be achieved by searching for a publisher directly or by searching for a publisher indirectly via a journal.
 
-If publisher details are available, they can be obtained from any report using the following:
-
-```ruby
-if report.respond_to? :publisher && report.publisher
-  publisher = report.publisher
-end
-```
-
-
 ### Journal search
 ```ruby
 # without API key
@@ -44,11 +35,12 @@ journals = Montague::API::Journal.new api_key: 'YOUR_API_KEY'
 ```
 
 #### Find by journal ISSN
+
 ```ruby
 report = journals.find_by_issn '1550-7998'
 #=> #<Montague::Model::JournalReport:0x00c0ffee ...>
-report.respond_to? :publisher
-#=> true
+report.journal
+#=> #<Montague::Model::Journal:0x00c0ffee @title="Physical Review D - Particles, Fields, Gravitation and Cosmology", @issn="1550-7998">
 report.publisher
 #=> #<Montague::Model::Publisher:0x00c0ffee ...>
 report.publisher.name
@@ -61,15 +53,13 @@ report.publisher.romeo_colour
 #=> "green"
 report.publisher.mandates
 #=> [#<Montague::Model::Mandate:0x00c0ffee @funder=#<Montague::Model::Funder:0x00c0ffee @name="Australian Research Council", @acronym="ARC">, @publisher_complies="yes", @compliance_type="Compliant", @selected_titles="no">, ...]
-report.journal
-#=> #<Montague::Model::Journal:0x00c0ffee @title="Physical Review D - Particles, Fields, Gravitation and Cosmology", @issn="1550-7998">
 ```
 
 ```ruby
 # alternative numbers for a journal, typically ESSN and ISSN
 report = journals.find_by_issn '1552-3535,0013-1245'
-report.respond_to? :publisher
-#=> true
+report.journal
+#=> #<Montague::Model::Journal:0xb3969e8 @title="Education and Urban Society", @issn="0013-1245">
 report.publisher
 #=> #<Montague::Model::Publisher:0x00c0ffee ...>
 ```
@@ -78,21 +68,21 @@ report.publisher
 ```ruby
 report = journals.find_by_title text: 'modern language', filter: :contains
 #=> #<Montague::Model::JournalsReport:0x00c0ffee ...>
-report.respond_to? :publisher
-#=> false
 report.journals.size
 #=> 13
 report.journals
 #=> [#<Montague::Model::Journal:0xacf4aa4 @title="Canadian Modern Language Review / Revue canadian des langues vivantes", @issn="0008-4506">, ...]
+report.publisher
+#=> nil
 ```
 
-An example of when the publisher is not available:
+An example of when the publisher is not available when a single journal has been found:
 
 ```ruby
 report = journals.find_by_title text: 'Man', filter: :exact
-#=> #<Montague::Model::JournalReport:0x00c0ffee ...>
-report.respond_to? :publisher
-#=> true
+#=> #<Montague::Model::JournalsReport:0x00c0ffee ...>
+report.journals.size
+#=> 1
 report.publisher
 #=> nil
 ```
@@ -109,8 +99,6 @@ publishers = Montague::API::Publisher.new api_key: 'YOUR_API_KEY'
 ```ruby
 report = publishers.find_by_name text: 'institute', filter: :exact
 #=> #<Montague::Model::PublishersReport:0x00c0ffee ...>
-report.respond_to? :publisher
-#=> false
 report.publishers.size
 #=> 122
 ```
@@ -119,8 +107,6 @@ report.publishers.size
 ```ruby
 report = publishers.find_by_id 10
 #=> #<Montague::Model::PublisherReport:0x00c0ffee ...>
-report.respond_to? :publisher
-#=> true
 report.publisher
 #=> #<Montague::Model::Publisher:0x00c0ffee ...>
 ```
@@ -136,8 +122,6 @@ client = Montague::API::Client.new api_key: 'YOUR_API_KEY'
 ```ruby
 report = client.journals.find_by_issn '1550-7998'
 #=> #<Montague::Model::JournalReport:0x00c0ffee ...>
-report.respond_to? :publisher
-#=> true
 report.publisher
 #=> #<Montague::Model::Publisher:0x00c0ffee ...>
 ```

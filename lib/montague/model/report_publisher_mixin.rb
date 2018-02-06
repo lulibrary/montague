@@ -4,7 +4,7 @@ module Montague
     #
     module ReportPublisherMixin
 
-      # @return [Montague::Model::Publisher]
+      # @return [Montague::Model::Publisher, nil]
       attr_accessor :publisher
 
     end

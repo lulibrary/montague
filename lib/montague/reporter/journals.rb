@@ -8,7 +8,7 @@ module Montague
         @response = response
         @header_extractor = Montague::XMLExtractor::Header.new response.to_s
         @journal_extractor = Montague::XMLExtractor::Journal.new response.to_s
-        # @publisher_extractor = Montague::XMLExtractor::Publisher.new response.to_s
+        @publisher_extractor = Montague::XMLExtractor::Publisher.new response.to_s
       end
 
       # @return [Montague::Model::JournalsReport]
@@ -17,7 +17,7 @@ module Montague
         h.http_response = @response
         h.header = @header_extractor.model
         h.journals = @journal_extractor.models
-        # h.publisher = @publisher_extractor.model
+        h.publisher = @publisher_extractor.model
         h
       end
 

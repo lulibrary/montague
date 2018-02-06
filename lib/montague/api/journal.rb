@@ -24,17 +24,11 @@ module Montague
       #   * :exact - Verbatim e.g. 'Journal of Geology'
       #   * :starts - Starts with e.g. 'machine'
       #   * :contains - Contains e.g. 'modern language'
-      # @return (see #journal_report)
       # @return (see #journals_report)
       def find_by_title(text:, filter: :exact)
         url = "#{@config[:api_url]}?jtitle=#{text}&qtype=#{filter}#{common_parameters}"
         response = HTTP.get URI.encode(url)
-        report = journals_report response
-        if report.header.hits === 1
-          return journal_report response
-        else
-          return report
-        end
+        journals_report response
       end
 
       private
