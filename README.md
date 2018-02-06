@@ -2,6 +2,9 @@
 
 Wrapper for the SHERPA RoMEO API.
 
+[![Gem Version](https://badge.fury.io/rb/montague.svg)](https://badge.fury.io/rb/montague)
+[![Maintainability](https://api.codeclimate.com/v1/badges/73f9d8be3f61882a8ec6/maintainability)](https://codeclimate.com/github/lulibrary/montague/maintainability)
+
 ## Installation
 
 Add this line to your application's Gemfile:
