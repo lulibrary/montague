@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = Montague::VERSION
   spec.authors       = 'Adrian Albin-Clark'
   spec.email         = 'a.albin-clark@lancaster.ac.uk'
-  spec.summary       = %q{Wrapper for the SHERPA RoMEO API.}
+  spec.summary       = %q{Wrapper for the SHERPA/RoMEO API.}
   spec.homepage      = 'https://github.com/lulibrary/montague'
   spec.license       = 'MIT'
   spec.files         = `git ls-files -z`.split("\x0")
