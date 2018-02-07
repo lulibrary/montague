@@ -1,6 +1,6 @@
 # Montague
 
-Wrapper for the SHERPA RoMEO API.
+Wrapper for the SHERPA/RoMEO API.
 
 ## Status
 
@@ -25,7 +25,7 @@ Or install it yourself as:
 
 ## Usage
 
-<a href="http://www.sherpa.ac.uk/romeo.php"><img src="romeosmall.jpg" width="100" height="54" alt="SHERPA/RoMEO Database" border="0"></a>
+<a href="http://www.sherpa.ac.uk/romeo.php"><img src="http://www.sherpa.ac.uk/images/romeosmall.jpg" width="100" height="54" alt="SHERPA/RoMEO Database" border="0"></a>
 
 This information is derived from the SHERPA/RoMEO database and has been modified for use here.
 
@@ -132,7 +132,7 @@ report.publisher
 ```
 
 ### Language support
-Configure an API object with the ```:language``` keyword argument and a 2-letter ISO 639-1 code to obtain results in English, German, Spanish, Hungarian or Portuguese.
+Configure an API object with the ```:language``` keyword argument and a 2-letter ISO 639-1 symbol to obtain results in English, German, Spanish, Hungarian or Portuguese.
 
 ### Inspecting reports
 ```ruby

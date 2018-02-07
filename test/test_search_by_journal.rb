@@ -90,7 +90,7 @@ class TestSearchByJournal < Minitest::Test
   def test_languages
     # title: Physical Review D - Particles, Fields, Gravitation and Cosmology
     # issn: 1550-7998
-    whitelist = %w(en de es hu pt)
+    whitelist = %i(en de es hu pt)
     whitelist.each do |i|
       journals = Montague::API::Journal.new api_key: ENV['MONTAGUE_API_KEY'],
                                             language: i

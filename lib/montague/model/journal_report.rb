@@ -7,7 +7,7 @@ module Montague
       include Montague::Model::ReportHTTPResponseMixin
       include Montague::Model::ReportPublisherMixin
 
-      # @return [Montague::Model::Journal, nil]
+      # @return [Montague::Model::Journal, cd nil]
       attr_accessor :journal
 
     end
