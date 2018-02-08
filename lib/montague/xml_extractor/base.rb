@@ -11,7 +11,11 @@ module Montague
       private
 
       def make_doc(xml)
-        xml = xml.encode('UTF-8', :invalid => :replace, :undef => :replace)
+        # puts [ xml.encoding, xml.valid_encoding? ]
+        # puts xml
+        # xml = xml.encode('UTF-8', :invalid => :replace, :undef => :replace)
+        # xml = xml.encode('ASCII-8BIT')
+        # xml = xml.encode('ISO-8859-1')
         @doc = Nokogiri::XML xml
         @doc.remove_namespaces!
       end
