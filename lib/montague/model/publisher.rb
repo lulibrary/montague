@@ -3,9 +3,9 @@ module Montague
 
     # Publisher
     #
-    class Publisher < Montague::Model::Base
+    class Publisher
 
-      # @return [Array<String>]
+      # @return [String]
       attr_accessor :alias
 
       # @return [Array<String>]

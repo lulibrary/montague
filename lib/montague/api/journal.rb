@@ -27,15 +27,7 @@ module Montague
       # @return (see #journals_report)
       def find_by_title(text:, filter: :exact)
         url = "#{@config[:api_url]}?jtitle=#{text}&qtype=#{filter}#{common_parameters}"
-        client = HTTP::Client.new
-        # client = client.headers({'Content-type' => 'text/xml; charset=ISO-8859-1'})
-        # puts client.inspect
-        response = client.get URI.encode(url)
-        puts [ response.to_s.encoding, response.to_s.valid_encoding? ]
-        # response = HTTP.get URI.encode(url)
-        report = journals_report response
-        puts report.publisher.romeo_colour
-        # puts report.publisher.romeo_colour.encode('ISO-8859-1')
+        response = HTTP.get URI.encode(url)
         journals_report response
       end
 
@@ -43,14 +35,14 @@ module Montague
 
       # @return [Montague::Model::JournalReport]
       def journal_report(response)
-        xml_extractor = Montague::Reporter::Journal.new response
-        xml_extractor.report
+        reporter = Montague::Reporter::Journal.new response
+        reporter.report
       end
 
       # @return [Montague::Model::JournalsReport]
       def journals_report(response)
-        xml_extractor = Montague::Reporter::Journals.new response
-        xml_extractor.report
+        reporter = Montague::Reporter::Journals.new response
+        reporter.report
       end
 
     end

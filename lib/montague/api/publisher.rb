@@ -35,14 +35,14 @@ module Montague
 
       # @return [Montague::Model::PublishersReport]
       def publishers_report(response)
-        xml_extractor = Montague::Reporter::Publishers.new response
-        xml_extractor.report
+        reporter = Montague::Reporter::Publishers.new response
+        reporter.report
       end
 
       # @return [Montague::Model::PublisherReport]
       def publisher_report(response)
-        xml_extractor = Montague::Reporter::Publisher.new response
-        xml_extractor.report
+        reporter = Montague::Reporter::Publisher.new response
+        reporter.report
       end
 
     end

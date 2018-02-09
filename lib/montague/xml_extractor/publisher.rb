@@ -105,27 +105,10 @@ module Montague
 
       # @return [String, nil]
       def romeo_colour
-        xpath_query_for_single_value '/publisher/romeocolour'
+       xpath_query_for_single_value '/publisher/romeocolour'
       end
 
-      # @return [Montague::Model::Publisher]
-      def package_model
-        m = Montague::Model::Publisher.new
-        m.alias = name_alias
-        m.conditions = conditions
-        m.copyright_links = copyright_links
-        m.id = id
-        m.mandates = mandates
-        m.name = name
-        m.paid_access = paid_access
-        m.pdf_version = pdf_version
-        m.pre_prints = pre_prints
-        m.post_prints = post_prints
-        m.romeo_colour = romeo_colour
-        m
-      end
-
-      # @return [Montague::Model::Publisher]
+      # @return [Array<Montague::Model::Publisher>]
       def models
         data = []
         xpath_result = xpath_query publisher_path
@@ -140,6 +123,23 @@ module Montague
       # @return [Montague::Model::Publisher]
       def model
         models.first unless models.empty?
+      end
+
+      # @return [Montague::Model::Publisher]
+      def package_model
+        m = Montague::Model::Publisher.new
+        m.alias = name_alias
+        m.conditions =  conditions
+        m.copyright_links = copyright_links
+        m.id = id
+        m.mandates = mandates
+        m.name = name
+        m.paid_access = paid_access
+        m.pdf_version = pdf_version
+        m.pre_prints = pre_prints
+        m.post_prints = post_prints
+        m.romeo_colour = romeo_colour
+        m
       end
 
       private
