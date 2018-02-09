@@ -11,7 +11,7 @@ module Montague
         @publisher_extractor = Montague::XMLExtractor::Publisher.new response.to_s
       end
 
-      # @return [Montague::Model::JournalsReport]
+      # @return [Montague::Model::JournalReport]
       def report
         h = Montague::Model::JournalReport.new
         h.http_response = @response

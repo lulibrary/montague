@@ -11,7 +11,6 @@ module Montague
       private
 
       def make_doc(xml)
-        xml = xml.encode('UTF-8', :invalid => :replace, :undef => :replace)
         @doc = Nokogiri::XML xml
         @doc.remove_namespaces!
       end
@@ -20,7 +19,7 @@ module Montague
       #
       # @return [String, nil]
       def xpath_query_for_single_value(path)
-        xpath_result = @doc.xpath(path).text.strip
+        xpath_result = @doc.xpath(path).text
         xpath_result.empty? ? nil : xpath_result
       end
 

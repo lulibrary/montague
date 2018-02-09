@@ -25,11 +25,9 @@ Or install it yourself as:
 
 ## Usage
 
+Discover a publisher's copyright and archiving policies by searching for a publisher directly or by searching for a publisher indirectly via a journal.
+
 <a href="http://www.sherpa.ac.uk/romeo.php"><img src="http://www.sherpa.ac.uk/images/romeosmall.jpg" width="100" height="54" alt="SHERPA/RoMEO Database" border="0"></a>
-
-This information is derived from the SHERPA/RoMEO database and has been modified for use here.
-
-Montague makes it possible to discover a publisher's copyright and archiving policies. This can be achieved by searching for a publisher directly or by searching for a publisher indirectly via a journal.
 
 ### Journal search
 ```ruby
@@ -81,9 +79,8 @@ report.publisher
 #=> nil
 ```
 
-An example of when the publisher is not available when a single journal has been found:
-
 ```ruby
+# example of when the publisher is not available for a journal
 report = journals.find_by_title text: 'Man', filter: :exact
 #=> #<Montague::Model::JournalsReport:0x00c0ffee ...>
 report.journals.size
@@ -130,9 +127,6 @@ report = client.journals.find_by_issn '1550-7998'
 report.publisher
 #=> #<Montague::Model::Publisher:0x00c0ffee ...>
 ```
-
-### Language support
-Configure an API object with the ```:language``` keyword argument and a 2-letter ISO 639-1 symbol to obtain results in English, German, Spanish, Hungarian or Portuguese.
 
 ### Inspecting reports
 ```ruby

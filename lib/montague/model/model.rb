@@ -1,6 +1,5 @@
 require 'montague/model/structure'
 require 'montague/model/archiving'
-require 'montague/model/base'
 require 'montague/model/copyright_link'
 require 'montague/model/funder'
 require 'montague/model/publisher'
